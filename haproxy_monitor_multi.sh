@@ -125,7 +125,7 @@ fi
 #/opt/aws/bin/ec2-associate-address -a $EIP_ALLOC -n $ENI_LB1 --allow-reassociation -U $EC2_URL
 /opt/aws/bin/ec2-assign-private-ip-addresses -n $ENI_LB1 --secondary-private-ip-address $VIP --allow-reassignment -U $EC2_URL
  echo `date` "-- LB2 heartbeat failed, LB1 instance taking over $LB_RT_ID and $NODE_RT_ID routes"
-/opt/aws/bin/ec2-replace-route $NODE_RT_ID -r $REMOTE_RANGE -n $ENI_LB1 -U $EC2_URL
+/opt/aws/bin/ec2-replace-route $RT_ID -r $REMOTE_RANGE -n $ENI_LB1 -U $EC2_URL
         WHO_HAS_VIP="LB1"
  fi
  # Check LB2 state to see if we should stop it or start it again

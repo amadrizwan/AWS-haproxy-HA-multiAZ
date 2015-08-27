@@ -86,8 +86,7 @@ while [ . ]; do
  if [ "$WHO_HAS_VIP" == "LB1" ]; then
  echo `date` "-- LB1 heartbeat failed, assigning VIP to LB2 instance ENI-1"
 #/opt/aws/bin/ec2-associate-address -a $EIP_ALLOC -n $ENI_LB2 --allow-reassociation -U $EC2_URL
-/opt/aws/bin/ec2-assign-private-ip-addresses -n $ENI_LB2 --secondary-private-ip-address $VIP --allow-reassignment -U $EC2_URL
- echo `date` "-- LB1 heartbeat failed, LB2 instance taking over $LB_RT_ID and $NODE_RT_ID routes"
+#/opt/aws/bin/ec2-assign-private-ip-addresses -n $ENI_LB2 --secondary-private-ip-address $VIP --allow-reassignment -U $EC2_URL
 /opt/aws/bin/ec2-replace-route $RT_ID -r $REMOTE_RANGE -n $ENI_LB2 -U $EC2_URL
 
         WHO_HAS_VIP="LB2"
@@ -123,8 +122,8 @@ fi
  if [ "$WHO_HAS_VIP" == "LB2" ]; then
  echo `date` "-- LB2 heartbeat failed, assigning VIP to LB1 instance ENI-1"
 #/opt/aws/bin/ec2-associate-address -a $EIP_ALLOC -n $ENI_LB1 --allow-reassociation -U $EC2_URL
-/opt/aws/bin/ec2-assign-private-ip-addresses -n $ENI_LB1 --secondary-private-ip-address $VIP --allow-reassignment -U $EC2_URL
- echo `date` "-- LB2 heartbeat failed, LB1 instance taking over $LB_RT_ID and $NODE_RT_ID routes"
+#/opt/aws/bin/ec2-assign-private-ip-addresses -n $ENI_LB1 --secondary-private-ip-address $VIP --allow-reassignment -U $EC2_URL
+# echo `date` "-- LB2 heartbeat failed, LB1 instance taking over $LB_RT_ID and $NODE_RT_ID routes"
 /opt/aws/bin/ec2-replace-route $RT_ID -r $REMOTE_RANGE -n $ENI_LB1 -U $EC2_URL
         WHO_HAS_VIP="LB1"
  fi

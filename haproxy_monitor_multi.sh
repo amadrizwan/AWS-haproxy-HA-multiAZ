@@ -19,7 +19,7 @@ Num_Pings=3
 Ping_Timeout=1
 Wait_Between_Pings=1
 Wait_for_Instance_Stop=60
-Wait_for_Instance_Start=300
+Wait_for_Instance_Start=120
 
 
 

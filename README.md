@@ -21,13 +21,11 @@ The script routes traffic destined for VIP to HAPROXY instance1's ENI if it is h
 
 Following vars have to be added/changed in the script.
 
-<code>
-# LB instance variables
-VIP="172.16.16.16"   #IP address that is configured on looback interface. Should not be in VPC CIDR range
-LB1_ID=""   # instance ID of vpcXX-ec2-lb-1a
-LB2_ID=""   # instance ID of vpcXX-ec2-lb-1b
-RT_ID=""    # Internal/NODE/LB routing table ID
+# LB instance variables <br />
+VIP="172.16.16.16"   #IP address that is configured on looback interface. Should not be in VPC CIDR range <br />
+LB1_ID=""   # instance ID of vpcXX-ec2-lb-1a <br />
+LB2_ID=""   # instance ID of vpcXX-ec2-lb-1b <br />
+RT_ID=""    # Internal/NODE/LB routing table ID <br />
 
-# Specify the EC2 region that this will be running in (e.g. https://ec2.eu-west-1.amazonaws.com)
-EC2_URL=""
-</code>
+# Specify the EC2 region that this will be running in (e.g. https://ec2.eu-west-1.amazonaws.com) <br />
+EC2_URL="" <br />

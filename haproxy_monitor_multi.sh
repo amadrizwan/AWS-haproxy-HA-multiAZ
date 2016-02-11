@@ -3,20 +3,17 @@
 # if communication with the other instance fails
 
 # LB instance variables
-VIP=""   #IP address that is configured on looback interface. Should not be in VPC CIDR range
+VIP="172.16.16.16"   #IP address that is configured on looback interface. Should not be in VPC CIDR range
 LB1_ID=""
 LB2_ID=""
-RT_ID=""   # VPN routing table ID
-#remote range is usually 0.0.0.0/0
-REMOTE_RANGE="0.0.0.0/0"
-
+RT_ID=""   # Internal/NODE/LB routing table ID
 
 # Specify the EC2 region that this will be running in (e.g. https://ec2.eu-west-1.amazonaws.com)
 EC2_URL=""
 
 # Health Check variables
 Num_Pings=3
-Ping_Timeout=1
+Ping_Timeout=2
 Wait_Between_Pings=1
 Wait_for_Instance_Stop=60
 Wait_for_Instance_Start=120
@@ -85,9 +82,7 @@ while [ . ]; do
  # LB1 instance is unhealthy, loop while we try to fix it
  if [ "$WHO_HAS_VIP" == "LB1" ]; then
  echo `date` "-- LB1 heartbeat failed, assigning VIP to LB2 instance ENI-1"
-#/opt/aws/bin/ec2-associate-address -a $EIP_ALLOC -n $ENI_LB2 --allow-reassociation -U $EC2_URL
-#/opt/aws/bin/ec2-assign-private-ip-addresses -n $ENI_LB2 --secondary-private-ip-address $VIP --allow-reassignment -U $EC2_URL
-/opt/aws/bin/ec2-replace-route $RT_ID -r $REMOTE_RANGE -n $ENI_LB2 -U $EC2_URL
+/opt/aws/bin/ec2-replace-route $RT_ID -r ${VIP}/32 -n $ENI_LB2 -U $EC2_URL
 
         WHO_HAS_VIP="LB2"
  fi
@@ -121,10 +116,7 @@ fi
  # LB2 instance is unhealthy, loop while we try to fix it
  if [ "$WHO_HAS_VIP" == "LB2" ]; then
  echo `date` "-- LB2 heartbeat failed, assigning VIP to LB1 instance ENI-1"
-#/opt/aws/bin/ec2-associate-address -a $EIP_ALLOC -n $ENI_LB1 --allow-reassociation -U $EC2_URL
-#/opt/aws/bin/ec2-assign-private-ip-addresses -n $ENI_LB1 --secondary-private-ip-address $VIP --allow-reassignment -U $EC2_URL
-# echo `date` "-- LB2 heartbeat failed, LB1 instance taking over $LB_RT_ID and $NODE_RT_ID routes"
-/opt/aws/bin/ec2-replace-route $RT_ID -r $REMOTE_RANGE -n $ENI_LB1 -U $EC2_URL
+/opt/aws/bin/ec2-replace-route $RT_ID -r ${VIP}/32 -n $ENI_LB1 -U $EC2_URL
         WHO_HAS_VIP="LB1"
  fi
  # Check LB2 state to see if we should stop it or start it again
